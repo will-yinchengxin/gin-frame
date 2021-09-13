@@ -1,0 +1,3 @@
+2021/09/12 00:03:51 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 24 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631376231354932700}
+2021/09/12 00:08:42 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 24 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631376522743546300}
+2021/09/12 11:25:11 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631417111690175900}

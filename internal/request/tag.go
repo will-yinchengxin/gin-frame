@@ -1,4 +1,4 @@
-package service
+package request
 
 type CountTagRequest struct {
 	Name  string `form:"name" binding:"max=100"`

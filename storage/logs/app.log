@@ -1,3 +1,7 @@
 2021/09/12 00:03:51 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 24 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631376231354932700}
 2021/09/12 00:08:42 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 24 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631376522743546300}
 2021/09/12 11:25:11 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"info","message":"eddycjy: go-programming-tour-book/%!s(MISSING)","time":1631417111690175900}
+2021/09/14 21:27:17 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"error","message":"app.BindAndValid err cause: State必须是[1 2]中的一个","time":1631626037694865100}
+2021/09/14 21:27:43 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"error","message":"app.BindAndValid err cause: State必须是[1 2]中的一个","time":1631626063345179300}
+2021/09/14 21:28:00 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"error","message":"app.BindAndValid err cause: State必须是[1 2]中的一个","time":1631626080298473000}
+2021/09/14 21:28:19 {"callers":["C:/Users/Administrator/Desktop/go/code/frame/main.go: 19 main.main"],"level":"error","message":"app.BindAndValid err cause: State必须是[1 2]中的一个","time":1631626099581937900}

@@ -11,6 +11,7 @@ import (
 )
 
 type Model struct {
+	ID         int64  `gorm:"id" json:"id" form:"id"`
 	CreateOn   int64  `gorm:"column:create_on" json:"create_on" form:"create_on"`
 	CreateBy   string `gorm:"column:create_by" json:"create_by" form:"create_by"`
 	ModifyedOn int64  `gorm:"column:modifyed_on" json:"modifyed_on" form:"modifyed_on"`

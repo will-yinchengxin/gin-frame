@@ -15,9 +15,10 @@ var (
 	TokenCreateError        = NewError(5024, "登陆凭证获取失败，请重试")
 	ThirdTokenBindError     = NewError(5025, "第三方平台绑定token不合法")
 
-	// db
-	DBOperatorError = NewError(5026, "数据操作错误，请求失败")
-	DBCreateError   = NewError(5027, "数据创建出错，请求失败")
-	DBUpdateError   = NewError(5028, "数据更新出错，请求失败")
-	DBDeleteError   = NewError(5029, "数据删除出错，请求失败")
+	// Tag Error
+	ErrorGetTagListFail = NewError(200010, "获取标签列表失败")
+	ErrorCountTagFail   = NewError(200011, "统计标签数量失败")
+	ErrorCreateTagFail  = NewError(200012, "创建标签失败")
+	ErrorUpdateTagFail  = NewError(200013, "更新标签失败")
+	ErrorDeleteTagFail  = NewError(200014, "删除标签失败")
 )

@@ -26,9 +26,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("init DB fail, cause %s", err)
 	}
-
 	router := routes.NewRouter()
 
+	//fmt.Println(global.UploadFileSetting.UploadImageAllExts)
 	// test log
 	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy")
 

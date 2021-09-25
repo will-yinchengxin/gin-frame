@@ -3,9 +3,6 @@ package errcode
 var (
 	Success          = NewError(200, "成功")
 	ServerError      = NewError(9000, "服务内部错误")
-	FAILURE          = NewError(9001, "请求失败")
-	GlobalError      = NewError(9002, "服务器异常,请稍后重试")
-	Misinformation   = NewError(4100, "传参有误")
 	InvalidParameter = NewError(5003, "无效参数")
 
 	TokenTypeError          = NewError(5020, "Token类型不正确")

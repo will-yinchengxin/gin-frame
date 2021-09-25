@@ -15,6 +15,8 @@ var (
 	ServerSetting   *setting.ServerSetting
 	AppSetting      *setting.AppSetting
 	DatabaseSetting *setting.DatabaseSetting
+	// 上传文件配置
+	UploadFileSetting  *setting.UploadFile
 	// 数据库
 	DBEngine *gorm.DB
 	// 日志连接
@@ -40,6 +42,7 @@ func SetupSetting() error {
 	}
 	ServerSetting.ReadTimeout = time.Second
 	ServerSetting.WriteTimeout = time.Second
+	err = setting.ReadSection("UploadFile", &UploadFileSetting)
 	return nil
 }
 

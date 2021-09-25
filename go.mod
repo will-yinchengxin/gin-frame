@@ -11,5 +11,4 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/spf13/viper v1.8.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
-	gorm.io/driver/mysql v1.1.2
 )

@@ -29,3 +29,10 @@ type DatabaseSetting struct {
 	MaxIdleConns int
 	MaxOpenConns int
 }
+
+type UploadFile struct {
+	UploadSavePath     string
+	UploadServerUrl    string
+	UploadImageMaxSize int
+	UploadImageAllExts []string
+}

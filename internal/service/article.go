@@ -19,3 +19,11 @@ func (a *Article) Gorm(req request.Company, ctx context.Context) (finalData inte
 	}
 	return res, &code.CodeType{}
 }
+
+func (a *Article) GormAndTracer(ctx context.Context) (finalData interface{}, codeType *code.CodeType) {
+	res, err := a.CompanyDao.GetList(ctx)
+	if err != nil {
+		return finalData, code.MqError
+	}
+	return res, &code.CodeType{}
+}

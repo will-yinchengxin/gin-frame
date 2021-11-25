@@ -5,6 +5,7 @@ import (
 	"frame/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	otgorm "github.com/eddycjy/opentracing-gorm"
 	"time"
 )
 
@@ -39,7 +40,6 @@ func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 
 	// 默认使用单表
 	db.SingularTable(true)
-
 	// ----------------------------------------------注册回调函数--------------------------------------
 	//db.Callback().Create().Replace("gorm:create_time_stamp", updateTimeStampForCreateCallback)
 	//db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
@@ -50,7 +50,13 @@ func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 	db.DB().SetMaxIdleConns(setting.MaxIdleConns)
 	// 最大打开连接数
 	db.DB().SetMaxOpenConns(setting.MaxOpenConns)
+	db.DB().SetConnMaxLifetime(time.Second * 1800)
+	db.DB().SetConnMaxIdleTime(time.Second * 3)
 
+	// 增加 openTracing 回调
+	otgorm.AddGormCallbacks(db)
+
+	//db.New(otgorm.WithContext())
 	return db, nil
 }
 

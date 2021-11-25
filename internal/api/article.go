@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+	"frame/consts"
 	"frame/global"
 	"frame/internal/request"
 	"frame/internal/service"
@@ -32,14 +34,16 @@ func (a *Article) Validator(c *gin.Context) {
 	code.Success(c)
 }
 
-func (a *Article) Gorm(c *gin.Context)  {
+func (a *Article) Gorm(c *gin.Context) {
 	var req request.Company
 	if err := global.ReqValidator.ParseJson(c, &req); err != "" {
 		code.ValidatorError(c, code.ParamsError.Code, err)
 		return
 	}
 
-	res, codeType := a.ArticleServer.Gorm(req, c)
+	spanFather, _ := c.Get(consts.SpanFather)
+	spanFatherCtx := spanFather.(context.Context)
+	res, codeType := a.ArticleServer.Gorm(req, spanFatherCtx)
 	if codeType.Code != 0 {
 		code.Error(c, codeType)
 		return
@@ -47,5 +51,17 @@ func (a *Article) Gorm(c *gin.Context)  {
 	dir, _ := os.Getwd()
 	global.Logger.Info(c, "route Gorm get data success")
 	global.Logger.Infof(c, "%s: route Gorm get data success", dir)
+	code.SuccessWithData(c, res)
+}
+
+func (a *Article) GormAndTracer(c *gin.Context) {
+	spanFather, _ := c.Get(consts.SpanFather)
+	spanFatherCtx := spanFather.(context.Context)
+	res, codeType := a.ArticleServer.GormAndTracer(spanFatherCtx)
+	if codeType.Code != 0 {
+		code.Error(c, codeType)
+		return
+	}
+
 	code.SuccessWithData(c, res)
 }

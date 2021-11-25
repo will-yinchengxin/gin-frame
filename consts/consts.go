@@ -1,5 +1,8 @@
 package consts
 
 const (
-	RunMode = "debug"
+	RunMode    = "debug"
+	SpanFather = "traceRoot"
+	XTraceID   = "X-Trace-ID"
+	XSpanID    = "X-Span-ID"
 )

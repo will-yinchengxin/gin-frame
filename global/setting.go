@@ -88,4 +88,3 @@ func SetTracer() error {
 	Tracer = jaegerTracer
 	return nil
 }
-

@@ -2,6 +2,7 @@ package middlerware
 
 import (
 	"context"
+	"frame/consts"
 	"frame/global"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
@@ -45,11 +46,13 @@ func Tracer() gin.HandlerFunc  {
 			tracerID = jaegerContext.TraceID().String()
 			spanID = jaegerContext.SpanID().String()
 		}
-		c.Set("X-Trace-ID", tracerID)
-		c.Set("X-Span-ID", spanID)
 
+		c.Set(consts.XTraceID, tracerID)
+		c.Set(consts.XSpanID, spanID)
+		// c.Request = c.Request.WithContext(ctx) 使用这种方式会导致上下文丢失
+		// 采用 c.Set 方式
+		c.Set(consts.SpanFather, ctx)
 		defer span.Finish()
-		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }

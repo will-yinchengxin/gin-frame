@@ -19,6 +19,7 @@ func (api *Artists) Initialize(app *gin.Engine) {
 		appGroup.GET("/testCode", api.article.Code)
 		appGroup.GET("/testValidator", api.article.Validator)
 		appGroup.GET("/testGorm", api.article.Gorm)
+		appGroup.GET("/testGormAndTracer", api.article.GormAndTracer)
 	}
 }
 

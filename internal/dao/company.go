@@ -11,7 +11,7 @@ type Company struct {
 }
 
 func (c *Company) GetById(id int64, ctx context.Context) (res model.Company, err error) {
-	// 此处的 debug
+	// 此处的 debug 与 model.NewDBEngine 中的 debug 设置效果相同
 	res = model.Company{}
 	if err = global.DBEngine.Table(c.CompanyModel.TableName()).Debug().
 		Where("id = ?", id).

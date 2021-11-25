@@ -28,3 +28,6 @@ UploadFile:
     - .jpg
     - .jpeg
     - .png
+Jaeger:
+  Host: 127.0.0.1:6831
+  Name: jaeger-server

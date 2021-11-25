@@ -29,6 +29,12 @@ func main() {
 		log.Fatalf("init DB fail, cause %s", err)
 	}
 
+	// 设置 jaegerTrace
+	err = global.SetTracer()
+	if err != nil {
+		log.Fatalf("init JaegerTrace fail, cause %s", err)
+	}
+
 	//fmt.Println(global.UploadFileSetting.UploadImageAllExts)
 	// test log
 	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy")

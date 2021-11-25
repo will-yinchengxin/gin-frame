@@ -3,9 +3,11 @@ package global
 import (
 	"frame/pkg/logger"
 	"frame/pkg/setting"
+	"frame/pkg/tracer"
 	"frame/pkg/validator"
 	"github.com/jinzhu/gorm"
 	"github.com/natefinch/lumberjack"
+	"github.com/opentracing/opentracing-go"
 	"log"
 	"time"
 )
@@ -15,6 +17,7 @@ var (
 	ServerSetting   *setting.ServerSetting
 	AppSetting      *setting.AppSetting
 	DatabaseSetting *setting.DatabaseSetting
+	TracerSetting	*setting.JaegerSetting
 	// 上传文件配置
 	UploadFileSetting  *setting.UploadFile
 	// 数据库
@@ -23,6 +26,8 @@ var (
 	Logger *logger.Logger
 	// 验证器
 	ReqValidator *validator.ValidatorX
+	// jeager
+	Tracer opentracing.Tracer
 )
 
 func SetupSetting() error {
@@ -42,9 +47,14 @@ func SetupSetting() error {
 	if err != nil {
 		return err
 	}
+	err = setting.ReadSection("UploadFile", &UploadFileSetting)
+	if err != nil {
+		return err
+	}
+	err = setting.ReadSection("Jaeger", &TracerSetting)
 	ServerSetting.ReadTimeout = time.Second
 	ServerSetting.WriteTimeout = time.Second
-	err = setting.ReadSection("UploadFile", &UploadFileSetting)
+
 	return nil
 }
 
@@ -68,5 +78,14 @@ func SetupLogger() (err error) {
 func SetValidator() {
 	ReqValidator = validator.NewValidator()
 	return
+}
+
+func SetTracer() error {
+	jaegerTracer, _ , err := tracer.NewJaegerTracer(TracerSetting.Name, TracerSetting.Host)
+	if err != nil {
+		return err
+	}
+	Tracer = jaegerTracer
+	return nil
 }
 

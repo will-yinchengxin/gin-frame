@@ -36,3 +36,8 @@ type UploadFile struct {
 	UploadImageMaxSize int
 	UploadImageAllExts []string
 }
+
+type JaegerSetting struct {
+	Host string
+	Name string
+}

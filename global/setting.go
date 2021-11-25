@@ -3,6 +3,7 @@ package global
 import (
 	"frame/pkg/logger"
 	"frame/pkg/setting"
+	"frame/pkg/validator"
 	"github.com/jinzhu/gorm"
 	"github.com/natefinch/lumberjack"
 	"log"
@@ -20,6 +21,8 @@ var (
 	DBEngine *gorm.DB
 	// 日志连接
 	Logger *logger.Logger
+	// 验证器
+	ReqValidator *validator.ValidatorX
 )
 
 func SetupSetting() error {
@@ -60,5 +63,10 @@ func SetupLogger() (err error) {
 		Compress:   true, // 默认禁用
 	}, "", log.LstdFlags).WithCaller(2)
 	return nil
+}
+
+func SetValidator() {
+	ReqValidator = validator.NewValidator()
+	return
 }
 

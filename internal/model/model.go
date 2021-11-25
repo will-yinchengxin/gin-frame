@@ -41,9 +41,9 @@ func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 	db.SingularTable(true)
 
 	// ----------------------------------------------注册回调函数--------------------------------------
-	db.Callback().Create().Replace("gorm:create_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Create().Replace("gorm:delete", deleteCallback)
+	//db.Callback().Create().Replace("gorm:create_time_stamp", updateTimeStampForCreateCallback)
+	//db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	//db.Callback().Create().Replace("gorm:delete", deleteCallback)
 	// -----------------------------------------------注册回调函数--------------------------------------
 
 	// 空闲连接最大连接数

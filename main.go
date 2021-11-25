@@ -20,6 +20,9 @@ func main() {
 		log.Fatalf("init Logger fail, cause %s", err)
 	}
 
+	// 初始化验证器
+	global.SetValidator()
+
 	//初始化数据库连接(这里不再global层做初始化,存在循环依赖的问题)
 	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
 	if err != nil {
@@ -30,6 +33,7 @@ func main() {
 	// test log
 	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy")
 
+	print("START SERVER, PORT 8080 \n")
 	core.HttpStarter()
 }
 

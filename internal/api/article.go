@@ -1,31 +1,14 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"frame/pkg/app"
+	"github.com/gin-gonic/gin"
+)
 
 type Article struct {
 }
 
-func NewArticle() Article {
-	return Article{}
-}
-
-func (a *Article) Get(c *gin.Context)  {
-
-}
-
 func (a *Article) List(c *gin.Context)  {
-
+	var res = app.NewResponse(c)
+	res.ToResponse(map[string]string{"name":"will"})
 }
-
-func (a *Article) Create(c *gin.Context)  {
-
-}
-
-func (a *Article) Update(c *gin.Context)  {
-
-}
-
-func (a *Article) Delete(c *gin.Context)  {
-
-}
-

@@ -6,14 +6,40 @@ import (
 	"net/http"
 )
 
+type CodeType struct {
+	Code int    `json:"code"`
+	Msg  string `json:"message"`
+}
+
+var (
+	SUCCESS = CodeType{200, "请求成功"}
+	ParamsError    = CodeType{5101, "参数错误"}
+	RecordNotFound = CodeType{5102, "记录不存在"}
+	ReportError    = CodeType{5103, "数据上报失败"}
+	MqError        = CodeType{5104, "mq错误"}
+)
+
 type Response struct {
 	Ctx *gin.Context
+}
+
+func SendResponse(rep CodeType, data interface{}) *RepType {
+	r := new(RepType)
+	r.Code = rep.Code
+	r.Msg = rep.Msg
+	r.Data = data
+	return r
 }
 
 type Pager struct {
 	Page      int `json:"page"`
 	PageSize  int `json:"page_size"`
-	TotalRows int `json:"total_rows"`
+	TotalRows int `json:"total"`
+}
+
+type RepType struct {
+	CodeType
+	Data interface{} `json:"data"`
 }
 
 func NewResponse(ctx *gin.Context) *Response {
@@ -24,7 +50,9 @@ func (r *Response) ToResponse(data interface{}) {
 	if data == nil {
 		data = gin.H{}
 	}
-	r.Ctx.JSON(http.StatusOK, data)
+	retData := SendResponse(SUCCESS, data)
+	r.Ctx.JSON(http.StatusOK, retData)
+	return
 }
 
 func (r *Response) ToResponseList(list interface{}, totalRows int) {
@@ -36,6 +64,7 @@ func (r *Response) ToResponseList(list interface{}, totalRows int) {
 			TotalRows: totalRows,
 		},
 	})
+
 }
 
 func (r *Response) ToErrorResponse(err *errcode.Error) {

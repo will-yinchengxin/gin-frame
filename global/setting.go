@@ -5,7 +5,6 @@ import (
 	"frame/pkg/setting"
 	"github.com/jinzhu/gorm"
 	"github.com/natefinch/lumberjack"
-	//"frame/internal/model"
 	"log"
 	"time"
 )

@@ -1,11 +1,10 @@
 package main
 
 import (
+	"frame/core"
 	"frame/global"
 	"frame/internal/model"
-	"frame/internal/routes"
 	"log"
-	"net/http"
 )
 
 func main() {
@@ -26,19 +25,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("init DB fail, cause %s", err)
 	}
-	router := routes.NewRouter()
 
 	//fmt.Println(global.UploadFileSetting.UploadImageAllExts)
 	// test log
 	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy")
 
-	s := http.Server{
-		Addr:          	global.ServerSetting.HttpPort,
-		Handler:        router,
-		ReadTimeout:    global.ServerSetting.ReadTimeout,
-		WriteTimeout:   global.ServerSetting.WriteTimeout,
-		MaxHeaderBytes: 1 << 20,
-	}
-	s.ListenAndServe()
+	core.HttpStarter()
 }
 

@@ -14,7 +14,7 @@ Database:
   Username: root
   Password: 123456
   Host: 127.0.0.1:13306
-  DBName: go_frame
+  DBName: will
   TablePrefix: _blog
   Charset: utf8mb4
   ParseTime: True
@@ -23,7 +23,7 @@ Database:
 UploadFile:
   UploadSavePath: storage/uploads
   UploadServerUrl: http://127.0.0.1:8080/static
-  UploadImageMaxSize: 5 #MB
+  UploadImageMaxSize: 5 # MB
   UploadImageAllExts:
     - .jpg
     - .jpeg

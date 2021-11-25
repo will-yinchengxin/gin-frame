@@ -1,5 +1,7 @@
  \.idea/
 .idea/
+idea/
+idea/*
 go.sum
 vendor/
 storage/*

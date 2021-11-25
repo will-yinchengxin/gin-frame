@@ -6,7 +6,7 @@ Server:
 App:
   DefaultPageSize: 10
   MaxPageSize: 100
-  LogSavePath: C:\Users\Administrator\Desktop\go\code\frame\storage\logs\
+  LogSavePath:  C:\Users\chengxin.yin\Desktop\pro\gin-frame\storage\logs\
   LogFileName: app
   LogFileExt: .log
 Database:

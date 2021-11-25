@@ -1,12 +1,12 @@
 package api
 
 import (
-	"context"
-	"frame/internal/request"
-	"frame/pkg/code"
 	"frame/global"
-	"github.com/gin-gonic/gin"
+	"frame/internal/request"
 	"frame/internal/service"
+	"frame/pkg/code"
+	"github.com/gin-gonic/gin"
+	"os"
 )
 
 type Article struct {
@@ -38,12 +38,14 @@ func (a *Article) Gorm(c *gin.Context)  {
 		code.ValidatorError(c, code.ParamsError.Code, err)
 		return
 	}
-	ctx := context.TODO()
 
-	res, codeType := a.ArticleServer.Gorm(req, ctx)
+	res, codeType := a.ArticleServer.Gorm(req, c)
 	if codeType.Code != 0 {
 		code.Error(c, codeType)
 		return
 	}
+	dir, _ := os.Getwd()
+	global.Logger.Info(c, "route Gorm get data success")
+	global.Logger.Infof(c, "%s: route Gorm get data success", dir)
 	code.SuccessWithData(c, res)
 }

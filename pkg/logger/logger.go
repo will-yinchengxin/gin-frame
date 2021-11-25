@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"runtime"
@@ -41,6 +42,7 @@ func (l Level) String() string {
 		return ""
 	}
 }
+
 //----------------------------日志部分方法--------------------------------
 type Logger struct {
 	newLogger *log.Logger
@@ -116,7 +118,18 @@ func (l *Logger) WithCallerFrames() *Logger {
 	return l1
 }
 
-// 日志内容格式化
+func (l *Logger) WithTracer() *Logger {
+	ginCtx, ok := l.ctx.(*gin.Context)
+	if ok {
+		return l.WithFields(Fileds{
+			"trace_id":ginCtx.MustGet("X-Trace-ID"),
+			"span_id":ginCtx.MustGet("X-Span-ID"),
+		})
+	}
+	return l
+}
+
+// --------------------------------日志内容格式化--------------------------------
 func (l *Logger) JSONFormat(level Level, message string) map[string]interface{} {
 	data := make(Fileds, len(l.fields)+4)
 	data["level"] = level.String()
@@ -133,8 +146,8 @@ func (l *Logger) JSONFormat(level Level, message string) map[string]interface{} 
 	return data
 }
 
-// 日志输出动作
-func (l *Logger) Output(level Level, message string) {
+// --------------------------------日志分级输出--------------------------------
+func (l *Logger) output(level Level, message string) { // 日志输出动作
 	body, _ := json.Marshal(l.JSONFormat(level, message))
 	content := string(body)
 	switch level {
@@ -153,56 +166,57 @@ func (l *Logger) Output(level Level, message string) {
 	}
 }
 
-// --------------------------------日志分级输出--------------------------------
 /*
 var test1 = []string{"will", "age"}
 var test2 = map[string]interface{}{"name":"will", "age":12}
 fmt.Println(fmt.Sprint(test1, test2)) // [will age] map[age:12 name:will]
 */
-func (l *Logger) Debug(v...interface{})  {
-	l.Output(LevelDebug, fmt.Sprint(v...))
+func (l *Logger) Debug(v ...interface{}) {
+	l.output(LevelDebug, fmt.Sprint(v...))
 }
 
-func (l *Logger) Debugf(format string, v ...interface{})  {
-	l.Output(LevelDebug, fmt.Sprintf(format, v...))
+func (l *Logger) Debugf(format string, v ...interface{}) {
+	l.output(LevelDebug, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Info(v...interface{})  {
-	l.Output(LevelInfo, fmt.Sprint(v...))
+func (l *Logger) Info(ctx context.Context, v ...interface{}) {
+	ll := l.WithContext(ctx).WithTracer()
+	ll.output(LevelInfo, fmt.Sprint(v...))
 }
 
-func (l *Logger) Infof(format string, v ...interface{})  {
-	l.Output(LevelInfo, fmt.Sprintf(format, v...))
+func (l *Logger) Infof(ctx context.Context, format string, v ...interface{}) {
+	ll := l.WithContext(ctx).WithTracer()
+	ll.output(LevelInfo, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Warn(v...interface{})  {
-	l.Output(LevelWarn, fmt.Sprint(v...))
+func (l *Logger) Warn(v ...interface{}) {
+	l.output(LevelWarn, fmt.Sprint(v...))
 }
 
-func (l *Logger) Warnf(format string, v ...interface{})  {
-	l.Output(LevelWarn, fmt.Sprintf(format, v...))
+func (l *Logger) Warnf(format string, v ...interface{}) {
+	l.output(LevelWarn, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Error(v...interface{})  {
-	l.Output(LevelError, fmt.Sprint(v...))
+func (l *Logger) Error(v ...interface{}) {
+	l.output(LevelError, fmt.Sprint(v...))
 }
 
-func (l *Logger) Errorf(format string, v ...interface{})  {
-	l.Output(LevelError, fmt.Sprintf(format, v...))
+func (l *Logger) Errorf(format string, v ...interface{}) {
+	l.output(LevelError, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Fatal(v...interface{})  {
-	l.Output(LevelFatal, fmt.Sprint(v...))
+func (l *Logger) Fatal(v ...interface{}) {
+	l.output(LevelFatal, fmt.Sprint(v...))
 }
 
-func (l *Logger) Fatalf(format string, v ...interface{})  {
-	l.Output(LevelFatal, fmt.Sprintf(format, v...))
+func (l *Logger) Fatalf(format string, v ...interface{}) {
+	l.output(LevelFatal, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Panic(v...interface{})  {
-	l.Output(LevelPanic, fmt.Sprint(v...))
+func (l *Logger) Panic(v ...interface{}) {
+	l.output(LevelPanic, fmt.Sprint(v...))
 }
 
-func (l *Logger) Panicf(format string, v ...interface{})  {
-	l.Output(LevelPanic, fmt.Sprintf(format, v...))
+func (l *Logger) Panicf(format string, v ...interface{}) {
+	l.output(LevelPanic, fmt.Sprintf(format, v...))
 }

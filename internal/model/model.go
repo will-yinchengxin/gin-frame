@@ -2,8 +2,6 @@ package model
 
 import (
 	"fmt"
-	"frame/consts"
-	"frame/global"
 	"frame/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -33,10 +31,12 @@ func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	// 开发模式开启日志详细模式
-	if global.ServerSetting.RunMode == consts.RunMode {
-		db.LogMode(true)
-	}
+	//if global.ServerSetting.RunMode == consts.RunMode {
+	//	db.LogMode(true)
+	//}
+
 	// 默认使用单表
 	db.SingularTable(true)
 

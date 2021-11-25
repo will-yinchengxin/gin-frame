@@ -20,3 +20,7 @@ type OnlineList struct {
 	AppId     int64  `form:"appId" json:"appId" validate:"omitempty,gt=0" label:"应用id"`
 	Url       string `form:"url" json:"url" validate:"omitempty,urlFormat"` // 使用自定义校验规则
 }
+
+type Company struct {
+	ID int64 `json:"id" validate:"required,gt=0"`
+}

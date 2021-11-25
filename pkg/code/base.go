@@ -25,7 +25,7 @@ func sendResponse(rep CodeType, data interface{}) *repType {
 
 // 请求成功, 并返回数据
 func SuccessWithData(ctx *gin.Context, data interface{}) {
-	retData := sendResponse(SUCCESS, data)
+	retData := sendResponse(*SUCCESS, data)
 	ctx.JSON(http.StatusOK, retData)
 	ctx.Abort()
 	return
@@ -33,15 +33,15 @@ func SuccessWithData(ctx *gin.Context, data interface{}) {
 
 // 请求成功
 func Success(ctx *gin.Context) {
-	retData := sendResponse(SUCCESS, map[string]interface{}{})
+	retData := sendResponse(*SUCCESS, map[string]interface{}{})
 	ctx.JSON(http.StatusOK, retData)
 	ctx.Abort()
 	return
 }
 
 // Error 输出错误
-func Error(ctx *gin.Context, rep CodeType) {
-	retData := sendResponse(rep, map[string]interface{}{})
+func Error(ctx *gin.Context, rep *CodeType) {
+	retData := sendResponse(*rep, map[string]interface{}{})
 	ctx.JSON(http.StatusOK, retData)
 	ctx.Abort()
 	return

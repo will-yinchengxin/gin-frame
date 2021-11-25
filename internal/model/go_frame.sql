@@ -73,3 +73,15 @@ CREATE TABLE `blog_tag`  (
 -- ----------------------------
 INSERT INTO `blog_tag` VALUES (1, 'test', 1);
 INSERT INTO `blog_tag` VALUES (2, 'testAno', 1);
+
+-- ----------------------------
+-- Table structure for company
+-- ----------------------------
+CREATE TABLE `company` (
+   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+   `industry` int DEFAULT '0',
+   `name` varchar(255) DEFAULT '',
+   `job` varchar(255) DEFAULT '',
+   `user_id` bigint DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

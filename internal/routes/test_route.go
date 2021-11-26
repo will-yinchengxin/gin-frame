@@ -15,7 +15,7 @@ type Artists struct {
 func (api *Artists) Initialize(app *gin.Engine) {
 	appGroup := app.Group("/v1/api").Use(middlerware.Tracer())
 	{
-		appGroup.GET("/articles", api.article.List)
+		appGroup.GET("/test", api.article.List)
 		appGroup.GET("/testCode", api.article.Code)
 		appGroup.GET("/testValidator", api.article.Validator)
 		appGroup.GET("/testGorm", api.article.Gorm)

@@ -3,6 +3,7 @@ package main
 import (
 	"frame/core"
 	"frame/global"
+	"frame/pkg/mysql"
 	"log"
 )
 
@@ -23,7 +24,7 @@ func main() {
 	global.SetValidator()
 
 	//初始化数据库连接(这里不再global层做初始化,存在循环依赖的问题)
-	global.DBEngine, err = core.NewDBEngine(global.DatabaseSetting)
+	global.DBEngine, err = mysql.NewDBEngine(global.DatabaseSetting)
 	if err != nil {
 		log.Fatalf("init DB fail, cause %s", err)
 	}

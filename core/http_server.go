@@ -9,7 +9,7 @@ import (
 )
 
 func HttpStarter() {
-	routeHandler, _ := newRouter()
+	routeHandler:= newRouter()
 	s := http.Server{
 		Addr:          	global.ServerSetting.HttpPort,
 		Handler:        routeHandler,
@@ -24,10 +24,10 @@ func HttpStarter() {
 }
 
 // 初始化路由
-func newRouter() (*gin.Engine, func()) {
+func newRouter() (*gin.Engine) {
 	gin.SetMode(gin.ReleaseMode) // 设置为 release 模式
 	engine := gin.Default()
 	router := routes.NewRouters
 	engine = router().SetupRouter(engine)
-	return engine, func() {}
+	return engine
 }

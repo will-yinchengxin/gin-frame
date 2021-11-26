@@ -4,6 +4,7 @@ import (
 	"context"
 	"frame/global"
 	"frame/internal/model"
+	"frame/internal/request"
 	otgorm "github.com/eddycjy/opentracing-gorm"
 	"github.com/jinzhu/gorm"
 )
@@ -28,11 +29,13 @@ func (c *Company) GetById(id int64, ctx context.Context) (res model.Company, err
 	return
 }
 
-func (c *Company) GetList(ctx context.Context) (res []model.Company, err error) {
-	if err = c.WithContext(ctx).Table(c.CompanyModel.TableName()).Debug().
+func (c *Company) GetList(page request.PageInfo, ctx context.Context) (res []model.Company, count int64, err error) {
+	if err = c.WithContext(ctx).Table(c.CompanyModel.TableName()). // Debug().
+		Scopes(PaginateInfo(&page)). // 自定义钩子函数
+		Count(&count).
 		Find(&res).
 		Error; err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	return
 }

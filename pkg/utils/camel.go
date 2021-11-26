@@ -1,7 +1,7 @@
-package camel
+package utils
 
 import (
-"strings"
+	"strings"
 "unicode"
 )
 

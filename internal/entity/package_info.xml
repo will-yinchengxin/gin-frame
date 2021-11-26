@@ -1,0 +1,2 @@
+<!-- Version 当前包的版本号 upgraded 待升级版本号（差分包必填） Device 当前包所属设备， 需要和OTA创建的设备名称保持一致 区分大小写 -->
+<manifest version="V02_MainLine_1.0.0_20211012_2t" upgraded="V02_MainLine_1.0.0_20211008_2t" device="V02A" ></manifest>

@@ -9,7 +9,9 @@ require (
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
+	github.com/jinzhu/copier v0.3.2
 	github.com/jinzhu/gorm v1.9.12
+	github.com/mholt/archiver/v3 v3.5.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/smacker/opentracing-gorm v0.0.0-20181207094635-cd4974441042 // indirect

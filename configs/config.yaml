@@ -31,3 +31,4 @@ UploadFile:
 Jaeger:
   Host: 127.0.0.1:6831
   Name: jaeger-server
+# yaml 生成结构体工具: https://yaml2go.prasadg.dev/

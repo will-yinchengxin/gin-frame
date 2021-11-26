@@ -2,22 +2,14 @@ package model
 
 import (
 	"fmt"
+	"frame/consts"
+	"frame/global"
 	"frame/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	otgorm "github.com/eddycjy/opentracing-gorm"
+	gormPlugin "frame/pkg/jaeger"
 	"time"
 )
-
-type Model struct {
-	ID         int64  `gorm:"id" json:"id" form:"id"`
-	CreateOn   int64  `gorm:"column:create_on" json:"create_on" form:"create_on"`
-	CreateBy   string `gorm:"column:create_by" json:"create_by" form:"create_by"`
-	ModifyedOn int64  `gorm:"column:modifyed_on" json:"modifyed_on" form:"modifyed_on"`
-	ModifyedBy string `gorm:"column:modifyed_by" json:"modifyed_by" form:"modifyed_by"`
-	DeletedOn  int64  `gorm:"column:deleted_on" json:"deleted_on" form:"deleted_on"`
-	IsDel      int64  `gorm:"column:is_del" json:"is_del" form:"is_del"`
-}
 
 func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
@@ -34,32 +26,33 @@ func NewDBEngine(setting *setting.DatabaseSetting) (*gorm.DB, error) {
 	}
 
 	// 开发模式开启日志详细模式
-	//if global.ServerSetting.RunMode == consts.RunMode {
-	//	db.LogMode(true)
-	//}
+	if global.ServerSetting.RunMode == consts.RunMode {
+		db.LogMode(false)
+	}
 
 	// 默认使用单表
 	db.SingularTable(true)
-	// ----------------------------------------------注册回调函数--------------------------------------
-	//db.Callback().Create().Replace("gorm:create_time_stamp", updateTimeStampForCreateCallback)
-	//db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	//db.Callback().Create().Replace("gorm:delete", deleteCallback)
-	// -----------------------------------------------注册回调函数--------------------------------------
 
 	// 空闲连接最大连接数
 	db.DB().SetMaxIdleConns(setting.MaxIdleConns)
 	// 最大打开连接数
 	db.DB().SetMaxOpenConns(setting.MaxOpenConns)
-	db.DB().SetConnMaxLifetime(time.Second * 1800)
-	db.DB().SetConnMaxIdleTime(time.Second * 3)
+	// 设置最大连接的时间
+	db.DB().SetConnMaxLifetime(time.Second * 900) // 15 分钟
+	// 设置最大的时间闲置的连接
+	db.DB().SetConnMaxIdleTime(time.Second * 10) // 10 秒钟
 
 	// 增加 openTracing 回调
-	otgorm.AddGormCallbacks(db)
+	gormPlugin.AddGormCallbacks(db)
 
-	//db.New(otgorm.WithContext())
 	return db, nil
 }
 
+// ----------------------------------------------注册回调函数--------------------------------------
+//db.Callback().Create().Replace("gorm:create_time_stamp", updateTimeStampForCreateCallback)
+//db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+//db.Callback().Create().Replace("gorm:delete", deleteCallback)
+// -----------------------------------------------注册回调函数--------------------------------------
 // 再编写model的时候 并没有对 CreatedOn ModifiedOn DeletedOn IsDel 进行处理
 // 再每张表中都插入这些字段显然不是很好的选择
 // 我们采用model callback 的方式进行处理,GORM本身也支持回调

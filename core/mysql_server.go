@@ -1,13 +1,13 @@
-package model
+package core
 
 import (
 	"fmt"
 	"frame/consts"
 	"frame/global"
+	gormPlugin "frame/pkg/jaeger"
 	"frame/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	gormPlugin "frame/pkg/jaeger"
 	"time"
 )
 

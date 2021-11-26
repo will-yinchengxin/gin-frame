@@ -5,6 +5,7 @@ import (
 	"frame/pkg/setting"
 	"frame/pkg/tracer"
 	"frame/pkg/validator"
+	"github.com/gomodule/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/natefinch/lumberjack"
 	"github.com/opentracing/opentracing-go"
@@ -17,11 +18,14 @@ var (
 	ServerSetting   *setting.ServerSetting
 	AppSetting      *setting.AppSetting
 	DatabaseSetting *setting.DatabaseSetting
-	TracerSetting	*setting.JaegerSetting
+	TracerSetting   *setting.JaegerSetting
+	RedisSetting    map[string]*setting.RedisSetting
 	// 上传文件配置
-	UploadFileSetting  *setting.UploadFile
+	UploadFileSetting *setting.UploadFile
 	// 数据库
 	DBEngine *gorm.DB
+	// redis 连接池
+	Redis map[string]*redis.Pool
 	// 日志连接
 	Logger *logger.Logger
 	// 验证器
@@ -47,11 +51,18 @@ func SetupSetting() error {
 	if err != nil {
 		return err
 	}
+	err = setting.ReadSection("Redis", &RedisSetting)
+	if err != nil {
+		return err
+	}
 	err = setting.ReadSection("UploadFile", &UploadFileSetting)
 	if err != nil {
 		return err
 	}
 	err = setting.ReadSection("Jaeger", &TracerSetting)
+	if err != nil {
+		return err
+	}
 	ServerSetting.ReadTimeout = time.Second
 	ServerSetting.WriteTimeout = time.Second
 
@@ -68,7 +79,7 @@ func SetupLogger() (err error) {
 	Logger = logger.NewLogger(&lumberjack.Logger{
 		Filename:   fileName,
 		MaxSize:    600,  // 兆字节
-		MaxBackups: 10,	  //
+		MaxBackups: 10,   //
 		MaxAge:     10,   // days
 		Compress:   true, // 默认禁用
 	}, "", log.LstdFlags).WithCaller(2)
@@ -81,10 +92,27 @@ func SetValidator() {
 }
 
 func SetTracer() error {
-	jaegerTracer, _ , err := tracer.NewJaegerTracer(TracerSetting.Name, TracerSetting.Host)
+	jaegerTracer, _, err := tracer.NewJaegerTracer(TracerSetting.Name, TracerSetting.Host)
 	if err != nil {
 		return err
 	}
 	Tracer = jaegerTracer
 	return nil
+}
+
+// 建立 redis 连接池
+func SetRedis() (err error) {
+	if len(RedisSetting) < 1 {
+		panic("init redis pool config failed, redis config not found")
+	}
+	Redis = make(map[string]*redis.Pool)
+	for name, val := range RedisSetting {
+		if rdb, err := initRedisPool(val); rdb != nil {
+			if err != nil {
+				return err
+			}
+			Redis[name] = rdb
+		}
+	}
+	return
 }

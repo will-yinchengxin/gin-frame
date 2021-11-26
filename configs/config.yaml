@@ -31,4 +31,23 @@ UploadFile:
 Jaeger:
   Host: 127.0.0.1:6831
   Name: jaeger-server
+Redis:
+  RedisOne:
+    host: 127.0.0.1:16379
+    password: ""
+    database: 0
+    maxIdleNum: 50
+    maxActive: 5000
+    maxIdleTimeout: 600
+    connectTimeout: 1
+    readTimeout: 2
+  RedisTwo:
+    host: 127.0.0.1:16379
+    password: ""
+    database: 1
+    maxIdleNum: 50
+    maxActive: 5000
+    maxIdleTimeout: 600
+    connectTimeout: 1
+    readTimeout: 2
 # yaml 生成结构体工具: https://yaml2go.prasadg.dev/

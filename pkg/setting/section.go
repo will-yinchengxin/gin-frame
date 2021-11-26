@@ -41,3 +41,14 @@ type JaegerSetting struct {
 	Host string
 	Name string
 }
+
+type RedisSetting struct {
+	MaxIdleNum     int    `yaml:"maxIdleNum"`
+	MaxActive      int    `yaml:"maxActive"`
+	MaxIdleTimeout int    `yaml:"maxIdleTimeout"`
+	ConnectTimeout int    `yaml:"connectTimeout"`
+	ReadTimeout    int    `yaml:"readTimeout"`
+	Host           string `yaml:"host"`
+	Password       string `yaml:"password"`
+	Database       int    `yaml:"database"`
+}

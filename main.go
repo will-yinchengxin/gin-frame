@@ -3,7 +3,6 @@ package main
 import (
 	"frame/core"
 	"frame/global"
-	"frame/internal/model"
 	"log"
 )
 
@@ -24,12 +23,18 @@ func main() {
 	global.SetValidator()
 
 	//初始化数据库连接(这里不再global层做初始化,存在循环依赖的问题)
-	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
+	global.DBEngine, err = core.NewDBEngine(global.DatabaseSetting)
 	if err != nil {
 		log.Fatalf("init DB fail, cause %s", err)
 	}
 
-	// 设置 jaegerTrace
+	// 初始化redis
+	err = global.SetRedis()
+	if err != nil {
+		log.Fatalf("init Redis fail, cause %s", err)
+	}
+
+	// 初始化jaegerTrace
 	err = global.SetTracer()
 	if err != nil {
 		log.Fatalf("init JaegerTrace fail, cause %s", err)

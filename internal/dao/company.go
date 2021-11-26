@@ -32,7 +32,7 @@ func (c *Company) GetById(id int64, ctx context.Context) (res model.Company, err
 func (c *Company) GetList(page request.PageInfo, ctx context.Context) (res []model.Company, count int64, err error) {
 	if err = c.WithContext(ctx).Table(c.CompanyModel.TableName()). // Debug().
 		Scopes(PaginateInfo(&page)). // 自定义钩子函数
-		Count(&count).
+		Count(&count).				 // count 会影响打点的次数, 导致从新执行一次 count 查询的
 		Find(&res).
 		Error; err != nil {
 		return nil, 0, err

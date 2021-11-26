@@ -7,6 +7,7 @@ import (
 	"frame/internal/request"
 	"frame/internal/service"
 	"frame/pkg/code"
+	"frame/pkg/redis"
 	"github.com/gin-gonic/gin"
 	"os"
 )
@@ -71,3 +72,11 @@ func (a *Article) GormAndTracer(c *gin.Context) {
 
 	code.SuccessWithData(c, res)
 }
+
+func (a *Article) Redis(c *gin.Context) {
+	rdsPool, _, _ := redis.GetRedisDB("redisone")
+	_, _ = rdsPool.Set("name", "will")
+	name, _ := rdsPool.Get("name")
+	code.SuccessWithData(c, name)
+}
+

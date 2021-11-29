@@ -28,14 +28,14 @@ func (c Consumer) Start() {
 			err = json.Unmarshal(msgs[i].Body, &req)
 			if err != nil {
 				// 日志的记录
-				global.Logger.Fatalf("Consumer err, cause %s", err)
+				global.Logger.Fatalf("Consumer err, cause %s", err.Error())
 				fmt.Println(err, req)
 				continue
 			} else {
 				msg := string(msgs[i].Body)
 				//fmt.Println(msg)
 				fmt.Println(msg)
-				global.Logger.Debugf("Consumer err, cause %s", err)
+				global.Logger.Debugf("Consumer err, cause %s", err.Error())
 			}
 		}
 		c = consumer.ConsumeSuccess

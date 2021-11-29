@@ -137,14 +137,14 @@ func SetRocketMQ() (err error) {
 		producer.WithGroupName(RocketSetting.GroupName),
 	)
 	if err != nil {
-		Logger.Fatalf("NewProducer fail, cause %s", err)
+		Logger.Fatalf("NewProducer fail, cause %s", err.Error())
 		return err
 	}
 
 	// 生产者
 	err = RocketProducer.Start()
 	if err != nil {
-		Logger.Fatalf("Producer Start fail, cause %s", err)
+		Logger.Fatalf("Producer Start fail, cause %s", err.Error())
 		return err
 	}
 
@@ -155,7 +155,7 @@ func SetRocketMQ() (err error) {
 		consumer.WithGroupName(RocketSetting.GroupName),
 	)
 	if err != nil {
-		Logger.Fatalf("NewPushConsumer fail, cause %s", err)
+		Logger.Fatalf("NewPushConsumer fail, cause %s", err.Error())
 		return err
 	}
 

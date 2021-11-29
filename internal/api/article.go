@@ -8,6 +8,7 @@ import (
 	"frame/internal/service"
 	"frame/pkg/code"
 	"frame/pkg/redis"
+	"frame/pkg/rocketMQ"
 	"github.com/gin-gonic/gin"
 	"os"
 )
@@ -80,3 +81,14 @@ func (a *Article) Redis(c *gin.Context) {
 	code.SuccessWithData(c, name)
 }
 
+func (a *Article) RocketMQ(c *gin.Context) {
+	defer rocketMQ.RocketClose()
+
+	// 生产者
+	//pro := rocketMQ.Producer{}
+	//pro.Send()
+
+	// 消费者
+	con := rocketMQ.Consumer{}
+	con.Start()
+}

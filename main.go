@@ -41,11 +41,19 @@ func main() {
 		log.Fatalf("init JaegerTrace fail, cause %s", err)
 	}
 
+	// 初始化 rocketMQ
+	err = global.SetRocketMQ()
+	if err != nil {
+		log.Fatalf("init JaegerTrace fail, cause %s", err)
+	}
+
 	//fmt.Println(global.UploadFileSetting.UploadImageAllExts)
 	// test log
 	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy")
 
 	print("START SERVER, PORT 8080 \n")
 	core.HttpStarter()
+
+	// todo 所有资源连接关闭 及 平滑重启
 }
 

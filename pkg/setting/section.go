@@ -52,3 +52,10 @@ type RedisSetting struct {
 	Password       string `yaml:"password"`
 	Database       int    `yaml:"database"`
 }
+
+type RocketSetting struct {
+	GroupName string   `yaml:"GroupName"`
+	Topic     string   `yaml:"Topic"`
+	Host      []string `yaml:"Host"`
+	Retry     int      `yaml:"Retry"`
+}

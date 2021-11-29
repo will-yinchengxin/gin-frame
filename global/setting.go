@@ -5,6 +5,9 @@ import (
 	"frame/pkg/setting"
 	"frame/pkg/tracer"
 	"frame/pkg/validator"
+	"github.com/apache/rocketmq-client-go/v2"
+	"github.com/apache/rocketmq-client-go/v2/consumer"
+	"github.com/apache/rocketmq-client-go/v2/producer"
 	"github.com/gomodule/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/natefinch/lumberjack"
@@ -20,6 +23,7 @@ var (
 	DatabaseSetting *setting.DatabaseSetting
 	TracerSetting   *setting.JaegerSetting
 	RedisSetting    map[string]*setting.RedisSetting
+	RocketSetting   *setting.RocketSetting
 	// 上传文件配置
 	UploadFileSetting *setting.UploadFile
 	// 数据库
@@ -32,6 +36,9 @@ var (
 	ReqValidator *validator.ValidatorX
 	// jeager
 	Tracer opentracing.Tracer
+	// rocketMQ
+	RocketConsumer rocketmq.PushConsumer
+	RocketProducer rocketmq.Producer
 )
 
 func SetupSetting() error {
@@ -63,6 +70,11 @@ func SetupSetting() error {
 	if err != nil {
 		return err
 	}
+	err = setting.ReadSection("RocketMQ", &RocketSetting)
+	if err != nil {
+		return err
+	}
+
 	ServerSetting.ReadTimeout = time.Second
 	ServerSetting.WriteTimeout = time.Second
 
@@ -114,5 +126,38 @@ func SetRedis() (err error) {
 			Redis[name] = rdb
 		}
 	}
+	return
+}
+
+// 初始化 rocketMQ
+func SetRocketMQ() (err error) {
+	RocketProducer, err = rocketmq.NewProducer(
+		producer.WithNameServer(RocketSetting.Host),
+		producer.WithRetry(RocketSetting.Retry),
+		producer.WithGroupName(RocketSetting.GroupName),
+	)
+	if err != nil {
+		Logger.Fatalf("NewProducer fail, cause %s", err)
+		return err
+	}
+
+	// 生产者
+	err = RocketProducer.Start()
+	if err != nil {
+		Logger.Fatalf("Producer Start fail, cause %s", err)
+		return err
+	}
+
+	// 消费者
+	RocketConsumer, err = rocketmq.NewPushConsumer(
+		consumer.WithNameServer(RocketSetting.Host),
+		consumer.WithConsumerModel(consumer.Clustering),
+		consumer.WithGroupName(RocketSetting.GroupName),
+	)
+	if err != nil {
+		Logger.Fatalf("NewPushConsumer fail, cause %s", err)
+		return err
+	}
+
 	return
 }

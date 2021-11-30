@@ -55,5 +55,9 @@ func main() {
 	core.HttpStarter()
 
 	// todo 所有资源连接关闭 及 平滑重启
+	//平滑重启或者退出之前执行
+	defer func() {
+		core.Stop()
+	}()
 }
 

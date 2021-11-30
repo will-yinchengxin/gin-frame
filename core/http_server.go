@@ -31,3 +31,8 @@ func newRouter() (*gin.Engine) {
 	engine = router().SetupRouter(engine)
 	return engine
 }
+
+//卸载各种任务和连接池
+func Stop() {
+
+}

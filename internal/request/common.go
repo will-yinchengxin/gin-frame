@@ -9,3 +9,8 @@ type Time struct {
 	StartTime int64 `form:"startTime" json:"startTime" validate:"required,ltNowTime" label:"开始时间"`
 	EndTime   int64 `form:"endTime" json:"endTime" validate:"required,unixTime,gtefield=StartTime" label:"截止时间"`
 }
+
+type Pass struct {
+	Password        string `json:"password" form:"password" validate:"omitempty,min=6,max=16"`
+	ConfirmPassword string `form:"confirm_password" json:"confirmPassword" validate:"eqfield=Password"`
+}

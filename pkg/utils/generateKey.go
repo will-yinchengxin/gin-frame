@@ -58,11 +58,11 @@ func NewLicence(length, attempts int) *Licence {
 }
 
 /**
-	l := NewLicence(8, 5)
-	licenseSlice, err := l.Generate(2)
-	if err != nil {
-		fmt.Println(err)
-		return 
-	}
-	fmt.Println(licenseSlice, err)
+l := NewLicence(8, 5)
+licenseSlice, err := l.Generate(2)
+if err != nil {
+	fmt.Println(err)
+	return 
+}
+fmt.Println(licenseSlice, err)
 **/
